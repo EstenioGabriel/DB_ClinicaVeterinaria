@@ -331,6 +331,48 @@ app.get('/api/relacaoVeterinarios', (req, res) => {
     });
 });
 
+app.get('/api/relatorioInternacoes', (req, res) => {
+    const query = `
+        SELECT 
+            internacao.id_internacao, 
+            animal.nome AS pet, 
+            tutor.nome AS tutor, 
+            leito.identificador AS leito,
+            internacao.data_entrada, 
+            internacao.previsao_alta, 
+            recibo.valor_total,
+            COALESCE(SUM(pagamento.valor_pago), 0) AS valor_pago,
+            (recibo.valor_total - COALESCE(SUM(pagamento.valor_pago), 0)) AS valor_pendente,
+            recibo.status_pagamento
+        FROM internacao
+        INNER JOIN animal ON animal.id_animal = internacao.id_animal
+        INNER JOIN tutor ON tutor.id_tutor = animal.id_tutor
+        INNER JOIN leito ON leito.id_leito = internacao.id_leito
+        INNER JOIN atendimento ON atendimento.id_atendimento = internacao.id_atendimento
+        LEFT JOIN recibo ON recibo.id_atendimento = atendimento.id_atendimento
+        LEFT JOIN pagamento ON pagamento.id_recibo = recibo.id_recibo
+        WHERE leito.status = 'OCUPADO'
+        GROUP BY 
+            internacao.id_internacao, 
+            animal.nome, 
+            tutor.nome, 
+            leito.identificador,
+            internacao.data_entrada, 
+            internacao.previsao_alta, 
+            recibo.valor_total, 
+            recibo.status_pagamento
+        ORDER BY internacao.data_entrada;
+    `
+
+    db.query(query, (err, result) => {
+        if(err){
+            console.log("Erro ao executar comando");
+            return res.status(500).json({erro: "Erro ao buscar relatorios de internacoes"})
+        }
+        res.json(result);
+    })
+})
+
 const PORT = 3000;
 app.listen(PORT, () =>{
     console.log(`Servidor rodando na PORTA:${PORT}`)
