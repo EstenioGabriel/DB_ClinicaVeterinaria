@@ -276,6 +276,37 @@ app.get('/api/relatorioAgendamento', (req, res) => {
     });
 });
 
+app.get('/api/valoresRecebidos', (req, res) => {
+    const query = `
+        SELECT 
+            pagamento.id_pagamento AS codigo_transacao,
+            pagamento.data_pagamento AS data_da_entrada,
+            tutor.nome AS nome_do_tutor,
+            animal.nome AS nome_do_pet,
+            item_recibo.descricao AS descricao_do_item,
+            item_recibo.tipo AS categoria_do_servico,
+            pagamento.forma_pagamento AS meio_de_pagamento,
+            item_recibo.valor AS valor_recebido
+        FROM pagamento
+        INNER JOIN recibo ON pagamento.id_recibo = recibo.id_recibo
+        INNER JOIN tutor ON recibo.id_tutor = tutor.id_tutor
+        INNER JOIN atendimento ON recibo.id_atendimento = atendimento.id_atendimento
+        INNER JOIN animal ON atendimento.id_animal = animal.id_animal
+        INNER JOIN item_recibo ON recibo.id_recibo = item_recibo.id_recibo
+        WHERE MONTH(pagamento.data_pagamento) = MONTH(CURRENT_DATE())
+        AND YEAR(pagamento.data_pagamento) = YEAR(CURRENT_DATE())
+        ORDER BY pagamento.data_pagamento DESC;
+    `
+
+    db.query(query, (err, result) => {
+        if(err){
+            console.log("Erro ao executar comando");
+            return res.status(500).json({erro: "Erro ao buscar valores recebidos do mes atual"});
+        }
+        res.json(result);
+    });
+});
+
 
 const PORT = 3000;
 app.listen(PORT, () =>{
