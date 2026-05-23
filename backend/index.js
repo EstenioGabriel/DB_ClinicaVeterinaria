@@ -307,6 +307,29 @@ app.get('/api/valoresRecebidos', (req, res) => {
     });
 });
 
+app.get('/api/relacaoVeterinarios', (req, res) => {
+    const query = `
+        SELECT
+            atendimento.id_atendimento,
+            veterinario.nome AS veterinario,
+            veterinario.crmv AS CRMV,
+            atendimento.data_hora AS data_atendimento,
+            animal.nome AS nome_do_pet,
+            COALESCE(proc_cirurgico.descricao, 'Sem Procedimento Cirurgico') AS procedimento
+        FROM veterinario
+        LEFT JOIN atendimento ON atendimento.id_veterinario = veterinario.id_veterinario
+        LEFT JOIN animal ON animal.id_animal = atendimento.id_animal
+        LEFT JOIN proc_cirurgico ON proc_cirurgico.id_atendimento = atendimento.id_atendimento
+        ORDER BY veterinario.nome, atendimento.data_hora;
+        `
+    db.query(query, (err, result) => {
+        if(err){
+            console.log("Erro ao executar comando");
+            return res.status(500).json({erro: "Erro ao buscar relacao de veterinarios"});
+        }
+        res.json(result);
+    });
+});
 
 const PORT = 3000;
 app.listen(PORT, () =>{
