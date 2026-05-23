@@ -28,7 +28,7 @@ app.get('/api', (req, res) =>{
     res.json({ mensagem: "Api da clinica veterinaria rodando!"});
 });
 
-app.get('/api/agendamentos/todos', (req, res) => {
+app.get('/api/agendamentos', (req, res) => {
     const query = `
         SELECT * FROM agendamento;
     `
