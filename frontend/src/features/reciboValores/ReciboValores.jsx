@@ -11,7 +11,7 @@ export function ReciboValores () {
                 setRecibo(dados);
             })
             .catch((erro) => {
-                console.log("Erro ao carregar dados no componente". erro);
+                console.log("Erro ao carregar dados no componente", erro);
             });
     }, []);
 
@@ -31,7 +31,7 @@ export function ReciboValores () {
                     {recibo.length > 0 ? (
                         <div className="grid-cards">
                             {recibo.map((recibo, index) => (
-                                <div className="card-header">
+                                <div className="card-agendamento" key={index}>
                                     <h3><strong/>Data: {recibo.data_da_entrada}</h3>
                                     <p><strong>Nome Do Tutor:</strong> {recibo.nome_do_tutor}</p>
                                     <p><strong>Nome Do Pet:</strong> {recibo.nome_do_pet}</p>

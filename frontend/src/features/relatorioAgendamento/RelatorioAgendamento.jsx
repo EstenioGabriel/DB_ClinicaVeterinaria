@@ -46,7 +46,7 @@ export function RelatorioAgendamento() {
                                 <div className='card-agendamento' key={agendamento.id_agendamento || index}>
                                     <div className='card-header'>
                                         <h3>🐾 {agendamento.nome_do_pet}</h3>
-                                        <span className='tag-data'>{formatarData(agendamento.data_da_consulta)}</span>
+                                        <span className='tag-data'>📅 : {formatarData(agendamento.data_da_consulta)}</span>
                                     </div>
                                     <div className='card-body'>
                                         <p><strong>👤 Tutor:</strong> {agendamento.nome_do_tutor}</p>

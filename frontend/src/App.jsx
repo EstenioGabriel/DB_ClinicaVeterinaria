@@ -1,6 +1,7 @@
 import { RelatorioAgendamento } from './features/relatorioAgendamento/RelatorioAgendamento'
 import { ReciboValores } from './features/reciboValores/ReciboValores'
 import { RelacaoMedicos } from './features/relacaoMedicos/RelacaoMedicos'
+import { RelatorioInternacao } from './features/relatorioInternacao/RelatorioInternacao'
 import './App.css'
 
 function App() {
@@ -16,6 +17,8 @@ function App() {
       <ReciboValores/>
 
       <RelacaoMedicos/>
+
+      <RelatorioInternacao/>
     </div>  
   )
 }

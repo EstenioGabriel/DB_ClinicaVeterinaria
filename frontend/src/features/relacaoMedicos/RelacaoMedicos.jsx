@@ -11,7 +11,7 @@ export function RelacaoMedicos () {
                 setRelacao(dados);
             })
             .catch((erro) => {
-                console.log("Erro ao carregar dados no componente". erro);
+                console.log("Erro ao carregar dados no componente", erro);
             });
     }, []);
 
@@ -31,7 +31,7 @@ export function RelacaoMedicos () {
                     {relacao.length > 0 ? (
                         <div className="grid-cards">
                             {relacao.map((relacao, index) => (
-                                <div className="card-header">
+                                <div className="card-agendamento"  key={index}>
                                     <h3><strong>Data De Atendimento:</strong> {relacao.data_atendimento}</h3>
                                     <p><strong>Nome do Veterinario:</strong> {relacao.veterinario}</p>
                                     <p><strong>CRMV: </strong> {relacao.CRMV}</p>
