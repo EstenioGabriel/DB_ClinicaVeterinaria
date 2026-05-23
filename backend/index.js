@@ -13,7 +13,8 @@ const db = mysql2.createConnection({
     host: 'localhost',
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: 'clinica_veterinaria'
+    database: 'clinica_veterinaria',
+    dateStrings: true
 });
 
 db.connect((err) =>{
