@@ -253,6 +253,28 @@ app.get('/api/veterinario', (req, res) => {
     });
 });
 
+// Pedidos do cliente
+
+app.get('/api/relatorioAgendamento', (req, res) => {
+    const query = `
+        SELECT
+            animal.nome AS nome_do_pet,
+            tutor.nome AS nome_do_tutor,
+            tutor.telefone AS telefone_do_tutor,
+            agendamento.data_hora AS data_da_consulta
+        FROM agendamento
+        INNER JOIN animal ON agendamento.id_animal
+        INNER JOIN tutor ON animal.id_tutor = tutor.id_tutor;
+    `
+    db.query(query, (err, result) => {
+        if(err){
+            console.log("Erro ao executar comando");
+            return json.status(500).json({erro: "Erro ao buscar relatorio de agendamentos"});
+        }
+        res.json(result);
+    });
+});
+
 
 const PORT = 3000;
 app.listen(PORT, () =>{
