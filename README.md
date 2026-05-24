@@ -1,39 +1,85 @@
-Cenário 9 – Sistema para Clínica Veterinária
-Em uma movimentada manhã de segunda-feira, a Clínica Veterinária "Vida Animal" inicia suas
-atividades com a chegada dos primeiros tutores e seus pets. A recepcionista, Ana, acessa o
-sistema para verificar os agendamentos do dia. Cada agendamento contém informações como
-data, hora, nome do tutor, nome do animal e motivo da consulta. Ao atender um novo cliente,
-Ana realiza o cadastro do tutor, registrando dados como nome completo, CPF, telefone e
-endereço. Em seguida, ela cadastra o animal, associando-o ao tutor. As informações do animal
-incluem nome, espécie, raça, idade, sexo, peso e histórico médico. O veterinário Dr. Carlos
-chama o próximo paciente para consulta. Durante o atendimento, ele realiza a anamnese,
-exame físico e, se necessário, solicita exames complementares. Todas essas informações são
-registradas no prontuário eletrônico do animal, que inclui: data e hora do atendimento,
-veterinário responsável, sintomas relatados, resultados de exames, diagnóstico, tratamento
-prescrito. O prontuário é essencial para acompanhar a evolução clínica do paciente e deve ser
-mantido atualizado a cada visita. Se o animal necessita de exames laboratoriais ou de imagem,
-o sistema registra a solicitação, associando-a ao atendimento correspondente. Os resultados
-são posteriormente anexados ao prontuário. Para procedimentos cirúrgicos, é necessário o
-preenchimento de um termo de consentimento assinado pelo tutor, autorizando a intervenção.
-Em casos que requerem internação, o animal é alocado em um leito disponível. O sistema
-registra a data de entrada, previsão de alta, tratamentos administrados e observações clínicas.
-Cada leito possui um identificador único e está associado ao animal internado. A clínica mantém
-um estoque de medicamentos que é rigorosamente controlado. Cada entrada e saída de
-medicamento é registrada, informando o nome do medicamento, quantidade, data de
-movimentação e responsável pela ação. Isso garante a disponibilidade de insumos e evita
-desperdícios. Após o atendimento, a recepcionista gera o recibo para o tutor, detalhando os
-serviços prestados, medicamentos utilizados e seus respectivos valores. O sistema permite
-diferentes formas de pagamento e emite comprovantes para o cliente.
-Neste cenário, solicitamos a criação do Diagrama de Entidade e Relacionamento, Modelo de
-Entidade e Relacionamento na 3ª Forma normal, os scripts de criação do banco de dados
-(separar criação de FKs), scripts de carga de dados para possibilitar consultas e os scripts SQL
-para gerar os seguintes relatórios:
-1. Relatório de agendamentos para o dia, indicando quais os nomes dos pets, seus tutores
-e o telefone do tutor.
-2. Relação de valores recebidos da clínica no mês atual, indicando uma lista descritiva de
-cada um dos valores que entraram na receita mensal da clínica.
-3. Relação de todos os médicos veterinários e todos os procedimentos e atendimentos
-feitos por eles na clínica, indicando o nome pet que foi atendido/visto.
-4. Relatório de todos os Pets que estão em internação e os valores pagos e pendentes de
-pagamento.
+# 🐾 Sistema de Gestão - Clínica Veterinária "Vida Animal"
 
+Este repositório contém o projeto prático final desenvolvido para a disciplina de **Ambiente de Dados** do curso de Análise e Desenvolvimento de Sistemas da **Universidade de Fortaleza (UNIFOR)**. O objetivo principal é a modelagem completa, normalização na 3ª Forma Normal (3FN), implementação física e consulta de um banco de dados relacional utilizando o **MySQL** para solucionar os requisitos de negócio da clínica "Vida Animal".
+
+---
+
+## 🎓 Identificação do Projeto
+
+* **Instituição:** Universidade de Fortaleza (UNIFOR)
+* **Curso:** Análise e Desenvolvimento de Sistemas (ADS)
+* **Semestre:** 3º Semestre
+* **Disciplina:** Ambiente de Dados
+* **Professora:** Ana Maria
+* **Equipe:**
+  * Estênio Gabriel
+  * Gabriel Brandão
+
+---
+
+## 📖 Cenário 9: Clínica Veterinária "Vida Animal"
+
+O sistema foi projetado com base em um fluxo operacional completo e integrado de uma clínica veterinária dinâmica, cobrindo os seguintes módulos:
+* **Recepção e Agendamentos:** Registro de consultas contendo data, hora, dados completos do tutor (Nome completo, CPF, Telefone e Endereço) e dados do pet (Nome, Espécie, Raça, Idade, Sexo, Peso e Histórico Médico).
+* **Atendimento Clínico e Prontuário:** Prontuário eletrônico alimentado pelo corpo veterinário (ex: Dr. Carlos) contendo anamnese, exame físico, sintomas relatados, solicitações de exames complementares/laboratoriais, diagnósticos e tratamentos prescritos.
+* **Internação e Internamento:** Alocação de animais em leitos hospitalares específicos com identificação única. O sistema controla a data de entrada, previsão de alta, tratamentos administrados, observações clínicas e exige o vínculo do termo de consentimento cirúrgico/intervenção assinado pelo tutor.
+* **Controle Rigoroso de Estoque:** Rastreabilidade absoluta de entradas e saídas de medicamentos, informando quantidade, data da movimentação e o profissional responsável pela ação, mitigando desperdícios.
+* **Faturamento e Caixa:** Geração automatizada de recibos discriminando serviços prestados, insumos/medicamentos utilizados e os valores correspondentes. Suporte a diferentes formas de pagamento com emissão de comprovantes de liquidação.
+
+---
+
+## 🗄️ Artefatos e Estrutura do Banco de Dados (MySQL)
+
+A entrega cumpre integralmente as exigências acadêmicas de modelagem de dados relacionais e está estruturada da seguinte forma:
+
+### 1. Modelagem Arquitetural
+* **Diagrama Entidade-Relacionamento (DER):** Modelo conceitual com o mapeamento visual das entidades, atributos e cardinalidades.
+* **Modelo Relacional na 3ª Forma Normal (3FN):** Garantia de integridade de dados e eliminação de redundâncias, dependências parciais ou transitivas.
+
+### 2. Scripts SQL Modulares (`/database`)
+Os arquivos SQL foram divididos estrategicamente para garantir uma execução limpa e sem erros de dependência cíclica:
+* `01_estrutura_tabelas.sql`: Comandos DDL para criação de todas as tabelas e definição de Chaves Primárias (`PRIMARY KEY`).
+* `02_restricoes_fks.sql`: Comandos DDL isolados para alteração de tabelas (`ALTER TABLE`) e criação das Chaves Estrangeiras (`FOREIGN KEY`), garantindo excelente legibilidade física.
+* `03_carga_dados.sql`: Massa de dados (DML) consistente para simular o funcionamento em ambiente real da clínica e validar os relatórios.
+
+---
+
+## 📊 Relatórios Gerenciais Exigidos (Consultas SQL)
+
+As consultas SQL foram implementadas no banco de dados e são consumidas diretamente pela nossa interface para gerar painéis executivos rápidos e limpos:
+
+1. **Relatório de Agendamentos do Dia:**
+   * *Objetivo:* Listar a agenda corrente para organização do fluxo na recepção.
+   * *Dados:* Nome do pet, nome do tutor e telefone do tutor.
+
+2. **Receita Mensal Detalhada (Mês Atual):**
+   * *Objetivo:* Demonstrativo analítico da receita mensal corrente.
+   * *Dados:* Lista descritiva e detalhada de cada valor que entrou no faturamento da clínica dentro do mês ativo.
+
+3. **Produtividade do Corpo Médico e Procedimentos:**
+   * *Objetivo:* Mapear o histórico de atendimentos e produtividade dos veterinários.
+   * *Dados:* Relação de todos os médicos veterinários, todos os procedimentos/atendimentos executados por eles e o nome do pet assistido.
+
+4. **Painel de Internações e Balanço Financeiro:**
+   * *Objetivo:* Controle clínico-financeiro de leitos ocupados.
+   * *Dados:* Relatório de todos os pets em internação corrente, evidenciando os valores já pagos e os valores pendentes de pagamento.
+
+---
+
+## 🛠️ Stack Tecnológica
+
+* **Camada de Persistência:** MySQL (SGBD Relacional)
+* **Modelagem:** Workbench / Draw.io
+* **Interface Visual (Frontend):** React.js (Interface construída do zero, aplicando uma arquitetura minimalista de alta legibilidade, otimizada em *Dark Mode* para redução do cansaço visual).
+* **Camada de Integração (Backend):** Servidor API para comunicação direta com o banco de dados.
+
+---
+
+## 🚀 Como Executar o Projeto
+
+### 1. Preparação do Banco de Dados
+Abra o terminal de comandos do MySQL ou o seu SGBD de preferência e execute os arquivos na ordem estrita abaixo:
+```bash
+mysql -u seu_usuario -p < database/01_estrutura_tabelas.sql
+mysql -u seu_usuario -p < database/02_restricoes_fks.sql
+mysql -u seu_usuario -p < database/03_carga_dados.sql
