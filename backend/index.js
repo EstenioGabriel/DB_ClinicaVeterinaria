@@ -9,21 +9,40 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const db = mysql2.createConnection({
-    host: 'localhost',
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: 'clinica_veterinaria',
-    dateStrings: true
-});
+let db;
 
-db.connect((err) =>{
-    if(err){
-        console.error("Erro ao conectar ao banco.", err);   
-        return;
-    }
-    console.log("Conectado ao banco com sucesso.");
-});
+function handleDisconnect() {
+    db = mysql2.createConnection({
+        host: process.env.DB_HOST || 'localhost',
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME || 'clinica_veterinaria',
+        port: process.env.DB_PORT || 3306,
+        dateStrings: true
+    });
+
+    db.connect((err) => {
+        if (err) {
+            console.error("Erro ao conectar ao banco. Tentando novamente em 5 segundos...", err.message);
+            setTimeout(handleDisconnect, 5000);
+        } else {
+            console.log("Conectado ao banco com sucesso.");
+        }
+    });
+
+    db.on('error', (err) => {
+        console.error('Erro no banco de dados:', err);
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+            console.log('Conexão com o banco perdida. Reconectando...');
+            handleDisconnect();
+        } else {
+            // Não crasha o servidor em outros erros, apenas loga
+            console.error('Erro de protocolo no MySQL');
+        }
+    });
+}
+
+handleDisconnect();
 
 app.get('/api', (req, res) =>{
     res.json({ mensagem: "Api da clinica veterinaria rodando!"});
